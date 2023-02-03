@@ -32,7 +32,7 @@ def start_recognition():
 
 
 def start_recognition_with_file(uploaded_file):
-    with st.spinner('Analyzing...'):
+    with st.spinner('Chargement...'):
 
         file_from_upload = uploaded_file
         if uploaded_file.name.endswith('.mp3'):
@@ -63,7 +63,7 @@ def start_recognition_with_file(uploaded_file):
 
 # Fonction de récupération des coordonnées GPS d'une gare
 def getCoordinates(gare):
-    dfStop = pd.read_csv('shortestPath/sncf/stops.txt', sep=",")
+    dfStop = pd.read_csv('data_sncf/stops.txt', sep=",")
     dfGare = dfStop[dfStop['stop_name'] == gare]
     latitude = dfGare['stop_lat'].values[0]
     longitude = dfGare['stop_lon'].values[0]
@@ -73,7 +73,7 @@ def getCoordinates(gare):
 
 # Fonction de récupération du nom d'une gare à partir d'une ville
 def get_gare_name(ville):
-    dfStop = pd.read_csv('shortestPath/sncf/stops.txt', sep=",")
+    dfStop = pd.read_csv('data_sncf/stops.txt', sep=",")
     dfGare = dfStop[dfStop['stop_id'].str.contains('StopPoint:OCETrain')]
     gare = dfGare[dfGare['stop_name'].str.contains(
         'Gare de ' + ville)]['stop_name'].values[0]
@@ -82,7 +82,7 @@ def get_gare_name(ville):
 
 # Fonction d'extraction des villes de départ et d'arrivée
 def extract_dep_and_arr(txt):
-    ner = spacy.load('nlp/model_ner')
+    ner = spacy.load('model_ner')
     doc = ner(txt)
 
     for ent in doc.ents:
@@ -153,6 +153,13 @@ def getShortestPath(start, end, graph):
         position = pd.DataFrame({'lat': lat, 'lon': lon})
 
         st.write('Voici vos', len(route), 'arrêts:')
-        st.write(' -> '.join(route))
+        listle = ' - '.join(route)
+        print(route)
+        st.write("| Departure | Arrival |")
+        st.write("| --- | --- |")
+        for index, i in enumerate(route):
+            print(i, index)
+            if index < len(route) - 1:
+                st.write(f'| {i} | {route[index + 1]} |')
 
         st.map(position)

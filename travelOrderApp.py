@@ -10,7 +10,8 @@ from utils import start_recognition, \
 st.title('Welcome to Travel Order')
 st.subheader('Please press start then talk to get your route')
 listening = False
-strlistening = "Analyzing your text.." if listening else "Start talking"
+strlistening = "Analyzing your text.." if listening else "Start listening"
+
 
 # Interface Streamlit
 if st.button(strlistening):
@@ -20,7 +21,7 @@ if st.button(strlistening):
             dep, arr = extract_dep_and_arr(phrase)
 
             if dep is None or arr is None:
-                st.write(
+                st.error(
                     "Cannot find a city departure and/or arrival. It seems that there is no city in your sentence")
             else:
                 st.write('Vous souhaitez partir de', dep, 'et arrivez à', arr)
@@ -45,4 +46,4 @@ if uploaded_file is not None:
                 st.write('Vous souhaitez partir de', dep, 'et arrivez à', arr)
 
                 getShortestPath(dep, arr, json.loads(
-                    open("shortestPath/graph.json", "r").read()))
+                    open("gareGraph/graph.json", "r").read()))
