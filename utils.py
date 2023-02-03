@@ -153,13 +153,8 @@ def getShortestPath(start, end, graph):
         position = pd.DataFrame({'lat': lat, 'lon': lon})
 
         st.write('Voici vos', len(route), 'arrêts:')
-        listle = ' - '.join(route)
-        print(route)
-        st.write("| Departure | Arrival |")
-        st.write("| --- | --- |")
         for index, i in enumerate(route):
-            print(i, index)
             if index < len(route) - 1:
-                st.write(f'| {i} | {route[index + 1]} |')
+                st.write(f'{i} -> {route[index + 1]}')
 
         st.map(position)
